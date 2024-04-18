@@ -27,8 +27,10 @@ app.use(
 )
 
 app.get('/authenticate/:username/:password', async (request, response) => {
-    const username = request.params.username;
-    const password = request.params.password;
+    let sanitizer = require('sanitize')();
+
+    const username = sanitizer.value(request.params.username, 'string')
+    const password = sanitizer.value(request.params.password, 'string');
 
     const query = `SELECT * FROM users WHERE user_name='${username}' and password='${password}'`;
     console.log(query);
