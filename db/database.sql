@@ -8,7 +8,7 @@ BEGIN;
 create table users (id serial primary key, user_name text not null unique, password text not null);
 grant all privileges on table users to secadv;
 
-insert into users (user_name, password) values ('pxl-admin', 'insecureandlovinit') ;
-insert into users (user_name, password) values ('george', 'iwishihadbetteradmins') ;
+INSERT INTO users (user_name, password) VALUES ('pxl-admin', SHA256('secureandlovinit'));
+INSERT INTO users (user_name, password) VALUES ('george', SHA256('iwishihadbetteradmins'));
 
-COMMIT;
+COMMIT; 

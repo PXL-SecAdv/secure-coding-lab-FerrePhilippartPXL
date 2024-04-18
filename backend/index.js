@@ -27,12 +27,16 @@ app.use(
 )
 
 app.get('/authenticate/:username/:password', async (request, response) => {
-    let sanitizer = require('sanitize')();
+    const validator = require('validator');
+    const crypto = require('crypto');
+    
+    const username = validator.escape(request.params.username);
+    const password = validator.escape(request.params.password);
 
-    const username = sanitizer.value(request.username, 'string')
-    const password = sanitizer.value(request.password, 'string')
+    const hashedPassword = '\\x' + crypto.createHash('sha256').update(password).digest('hex');
+    console.log(hashedPassword)
 
-    const query = `SELECT * FROM users WHERE user_name='${username}' and password='${password}'`;
+    const query = `SELECT * FROM users WHERE user_name='${username}' and password='${hashedPassword}'`;
     console.log(query);
     pool.query(query, (error, results) => {
       if (error) {
